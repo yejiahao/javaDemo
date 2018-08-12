@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root name="中国">
+    <Province attr="特性">
+        <City>香港</City>
+        <City>澳门</City>
+        <City>台湾</City>
+    </Province>
+    <Province prop="属性">
+        <City>广州</City>
+        <City>深圳</City>
+        <City>珠海</City>
+    </Province>
+</root>
