@@ -12,17 +12,17 @@ public class RMIServerServiceImpl extends UnicastRemoteObject implements RMIServ
     }
 
     @Override
-    public String echo(String msg) throws RemoteException {
+    public String echo(String msg) {
         return "来自老师： " + msg;
     }
 
     @Override
-    public String echo(String yourNo, byte[] yourName) throws RemoteException {
+    public String echo(String yourNo, byte[] yourName) {
         return "yourName";
     }
 
     @Override
-    public Date getTime() throws RemoteException {
+    public Date getTime() {
         return new Date();
     }
 

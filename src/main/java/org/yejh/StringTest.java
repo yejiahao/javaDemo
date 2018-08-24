@@ -8,19 +8,16 @@ public class StringTest {
         String s4 = "ming";
         String s5 = "Program" + "ming";
         String s6 = s3 + s4;
-        System.out.println(s1 == s2);
-        System.out.println(s1 == s5);
-        System.out.println(s1 == s6);
-        System.out.println(s1 == s6.intern());
-        System.out.println(s2 == s2.intern());
+        System.out.println("s1 == s2: " + (s1 == s2));// false
+        System.out.println("s1 == s5: " + (s1 == s5));// true
+        System.out.println("s1 == s6: " + (s1 == s6));// false
+        System.out.println("s1 == s6.intern(): " + (s1 == s6.intern()));// true
+        System.out.println("s2 == s2.intern(): " + (s2 == s2.intern()));// false
 
-        /*
-         * false true false true false
-         */
-
+        System.out.print("toCharArray: ");
         String str = "1bcdAasdfdfg";
         for (char c : str.toCharArray()) {
-            System.out.print(c + "\t");
+            System.out.print("\t" + c);
         }
         System.out.println();
 
@@ -40,13 +37,6 @@ public class StringTest {
         System.out.println(StringTest.reverseString(normalStr));
         System.out.println(normalStr);
         System.out.println("------------------------------");
-
-        int reverseInt1 = 456123;
-        int reverseInt2 = 85258;
-        int reverseInt3 = 12566521;
-        System.out.println(palindrome(reverseInt1));
-        System.out.println(palindrome(reverseInt2));
-        System.out.println(palindrome(reverseInt3));
     }
 
     private static String reverseString(String normalStr) {
@@ -54,15 +44,5 @@ public class StringTest {
             return normalStr;
         }
         return reverseString(normalStr.substring(1)) + normalStr.charAt(0);
-    }
-
-    private static Boolean palindrome(int source) {
-        int temp = source;
-        int target = 0;
-        while (temp > 0) {
-            target = target * 10 + temp % 10;
-            temp /= 10;
-        }
-        return source == target;
     }
 }

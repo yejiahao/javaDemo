@@ -1,6 +1,6 @@
 package org.yejh;
 
-public class Symmetry {
+public class Palindrome {
     public static Boolean testSymmetry(int source) {
         int temp = source;
         int target = 0;
@@ -17,6 +17,6 @@ public class Symmetry {
 
     public static void main(String[] args) {
         int number = 2145412;
-        System.out.println(Symmetry.testSymmetry(number));
+        System.out.println(Palindrome.testSymmetry(number));
     }
 }

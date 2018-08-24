@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ProducerComsumer {
+public class ProducerConsumer {
     public static Buffer buffer = new Buffer();
 
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         executorService.execute(new ProducerRunnable());
-        executorService.execute(new ComsumerRunnable());
+        executorService.execute(new ConsumerRunnable());
         executorService.shutdown();
     }
 
@@ -33,7 +33,7 @@ public class ProducerComsumer {
 
     }
 
-    static class ComsumerRunnable implements Runnable {
+    static class ConsumerRunnable implements Runnable {
         @Override
         public void run() {
             while (true) {
@@ -50,7 +50,7 @@ public class ProducerComsumer {
     }
 
     static class Buffer {
-        private List<Integer> list = new ArrayList<Integer>();
+        private List<Integer> list = new ArrayList<>();
         private static final int CAPACITY = 2;
 
         public void addElement(int i) {

@@ -7,7 +7,7 @@ public class ThreadSafety {
         for (int i = 1; i <= 10; i++) {
             count += i;
         }
-        System.out.println("name: " + Thread.currentThread().getName() + ", count: " + count);
+        System.out.println(Thread.currentThread().getName() + ", count: " + count);
         return count;
     }
 

@@ -11,8 +11,7 @@ public class SalaryCalUtil {
         throw new AssertionError();
     }
 
-    public static double afterTaxSalary(double money, int isMinInsurance, double subMoney, double percentage)
-            throws Exception {
+    public static double afterTaxSalary(double money, int isMinInsurance, double subMoney, double percentage) throws Exception {
         BigDecimal b_money = new BigDecimal(money);
         BigDecimal b_subMoney = new BigDecimal(subMoney);
         BigDecimal b_percentage = new BigDecimal(percentage);

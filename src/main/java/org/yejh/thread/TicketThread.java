@@ -11,40 +11,31 @@ public class TicketThread {
             list.add("火车票" + i);
         }
 
-        Thread addTicket = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.out.println("add-id: " + Thread.currentThread().getId());
-                    list.add("火车票" + new Random().nextInt(100));
-                }
+        Thread addTicket = new Thread(() -> {
+            while (true) {
+                System.out.println("add-id: " + Thread.currentThread().getId());
+                list.add("火车票" + new Random().nextInt(100));
             }
-        };
+        });
 
-        Thread removeTicket = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    for (String ticket : list) {
-                        System.out.println("remove-id: " + Thread.currentThread().getId());
-                        list.remove(ticket);
-                    }
+        Thread removeTicket = new Thread(() -> {
+            while (true) {
+                for (String ticket : list) {
+                    System.out.println("remove-id: " + Thread.currentThread().getId());
+                    list.remove(ticket);
                 }
             }
-        };
+        });
 
         // addTicket.start();
         // removeTicket.start();
 
         for (int i = 0; i < 10; i++) {
-            new Thread() {
-                @Override
-                public void run() {
-                    while (true) {
-                        System.out.println("testSyn-id: " + Thread.currentThread().getId() + " | " + list.remove(0));
-                    }
+            new Thread(() -> {
+                while (true) {
+                    System.out.println("testSyn-id: " + Thread.currentThread().getId() + " | " + list.remove(0));
                 }
-            }.start();
+            }).start();
         }
 
     }

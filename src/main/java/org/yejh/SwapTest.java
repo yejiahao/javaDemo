@@ -2,34 +2,32 @@ package org.yejh;
 
 public class SwapTest {
     public static void main(String[] args) {
-        StringBuffer sb1 = new StringBuffer("A");
-        StringBuffer sb2 = new StringBuffer("B");
+        StringBuilder sb1 = new StringBuilder("A");
+        StringBuilder sb2 = new StringBuilder("B");
 
-        String s1 = "A";
-        String s2 = "B";
+        String str1 = "C";
+        String str2 = "D";
 
-        swap(sb1, sb2);
-        System.out.println(sb1);
-        System.out.println(sb2);
+        System.out.printf("[before]swapSb: %s, %s%n", sb1, sb2);
+        swapSb(sb1, sb2);
+        System.out.printf("[after ]swapSb: %s, %s%n", sb1, sb2);
 
         System.out.println();
 
-        swapbbb(s1, s2);
-        System.out.println(s1);
-        System.out.println(s2);
+        System.out.printf("[before]swapStr: %s, %s%n", str1, str2);
+        swapStr(str1, str2);
+        System.out.printf("[after ]swapStr: %s, %s%n", str1, str2);
     }
 
-    public static void swap(StringBuffer a, StringBuffer b) {
-        a.append(b);
-        b = a;
-        System.out.println("swap: " + a);
-        System.out.println("swap: " + b);
+    public static void swapSb(StringBuilder sb1, StringBuilder sb2) {
+        sb1.append(sb2);
+        sb2 = sb1;
+        System.out.printf("[ swap ]swapSb: %s, %s%n", sb1, sb2);
     }
 
-    public static void swapbbb(String a, String b) {
-        a = a + b;
-        b = a;
-        System.out.println("swapbbb: " + a);
-        System.out.println("swapbbb: " + b);
+    public static void swapStr(String str1, String str2) {
+        str1 = str1 + str2;
+        str2 = str1;
+        System.out.printf("[ swap ]swapStr: %s, %s%n", str1, str2);
     }
 }

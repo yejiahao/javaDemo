@@ -15,17 +15,17 @@ public class StreamTest {
     }
 
     private static void oldMethod(List<List<String>> lists) {
-        int count = 0;
+        int result = 0;
         for (int i = 0; i < lists.size(); i++) {
             List<String> subList = lists.get(i);
             for (int j = 0; j < subList.size(); j++) {
                 String str = subList.get(j);
                 if (str.length() > 2) {
-                    count++;
+                    result++;
                 }
             }
         }
-        System.out.println("oldMethod: " + count);
+        System.out.println("oldMethod: " + result);
     }
 
     private static void newMethod(List<List<String>> lists) {

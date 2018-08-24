@@ -1,53 +1,75 @@
 package org.yejh.constructor;
 
+import java.io.*;
 import java.lang.reflect.Constructor;
 
+import static java.lang.System.out;
+
 public class ConstructorTest {
-    public static void main(String[] args) {
-        Class<Bean> c = Bean.class;
+    public static void main(String[] args) throws ReflectiveOperationException, IOException, CloneNotSupportedException {
+        Bean bean1 = new Bean();
+        out.printf("[new 关键字]bean1: %s%n%n", bean1);
 
-        try {
-            Constructor<Bean> constructor = c.getDeclaredConstructor();
-            constructor.setAccessible(Boolean.TRUE);
-            Bean bean1 = constructor.newInstance();
-            System.out.println("bean1: " + bean1);
+        Constructor<Bean> constructor = Bean.class.getDeclaredConstructor();
+        constructor.setAccessible(Boolean.TRUE);
+        Bean bean21 = constructor.newInstance();
+        out.printf("[无参反射]bean21: %s%n%n", bean21);
 
-            System.out.println("-------------------------------------------------------------");
+        constructor = Bean.class.getDeclaredConstructor(new Class[]{String.class, double.class});
+        constructor.setAccessible(Boolean.TRUE);
+        Bean bean22 = constructor.newInstance(new Object[]{"Samsung Galaxy Note 8", 7300});
+        out.printf("[带参反射]bean22: %s%n%n", bean22);
 
-            constructor = c.getDeclaredConstructor(new Class[]{double.class, String.class});
-            constructor.setAccessible(Boolean.TRUE);
+        Bean bean3 = (Bean) bean1.clone();
+        out.printf("[克隆]bean3: %s%n%n", bean3);
 
-            Bean bean2 = constructor.newInstance(new Object[]{3800, "Samsung Galaxy Note3"});
-            System.out.println("bean2: " + bean2);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Bean bean4 = bean1;
+        bean4.setPrice(9500);
+        bean4.setBrand("Iphone X");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("/constructorTest.txt"));
+             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/constructorTest.txt"))) {
+            oos.writeObject(bean4);
+            out.printf("[反序列化]bean4: %s%n%n", ois.readObject());
         }
     }
 }
 
-class Bean {
-    private double price;
+class Bean implements Cloneable, Serializable {
     private String brand;
+    private transient double price;
 
     {
-        System.out.println("default constructor block");
+        out.println("default constructor block");
     }
 
-    private Bean() {
-        System.out.println("no signature constructor method");
+    public Bean() {
+        out.println("no signature constructor method");
     }
 
-    private Bean(double price, String brand) {
-        System.out.println("signature constructor method");
-        this.price = price;
+    private Bean(String brand, double price) {
+        out.println("signature constructor method");
         this.brand = brand;
+        this.price = price;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     @Override
     public String toString() {
         return "Bean{" +
-                "price=" + price +
-                ", brand='" + brand + '\'' +
+                "brand='" + brand + '\'' +
+                ", price=" + price +
                 '}';
     }
 }

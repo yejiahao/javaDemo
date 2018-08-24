@@ -7,7 +7,7 @@ class Sneeze extends Annoyance {
 }
 
 public class ExceptionTest {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
             try {
                 throw new Sneeze();
