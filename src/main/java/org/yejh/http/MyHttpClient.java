@@ -3,9 +3,15 @@ package org.yejh.http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
 
@@ -17,28 +23,59 @@ public class MyHttpClient {
     public static String doHttpPost(String reqStr, String url, String contentType) {
         InputStream is = null;
         try {
-            URLConnection urlConnection = new URL(url).openConnection();
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-            urlConnection.setUseCaches(false);
+            HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
 
-            urlConnection.setConnectTimeout(30000);// 连接主机的超时时间（单位：毫秒）
-            urlConnection.setReadTimeout(30000);// 从主机读取数据的超时时间（单位：毫秒）
-            urlConnection.setRequestProperty("Content-length", String.valueOf(reqStr.getBytes().length));
+            conn.setConnectTimeout(5000);// 连接主机的超时时间（单位：毫秒）
+            conn.setReadTimeout(10000);// 从主机读取数据的超时时间（单位：毫秒）
+            conn.setRequestProperty("Content-length", String.valueOf(reqStr.getBytes().length));
 
             if (contentType != null) {
-                urlConnection.setRequestProperty("Content-Type", contentType);
+                conn.setRequestProperty("Content-Type", contentType);
+            }
+
+            // 信任所有https证书
+            if (conn instanceof HttpsURLConnection) {
+                SSLContext ctx = SSLContext.getInstance("SSL");
+                ctx.init(null, new TrustManager[]{
+                        new X509TrustManager() {
+                            @Override
+                            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
+                            }
+
+                            @Override
+                            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
+                            }
+
+                            @Override
+                            public X509Certificate[] getAcceptedIssuers() {
+                                return new X509Certificate[0];
+                            }
+                        }
+                }, null);
+                ((HttpsURLConnection) conn).setSSLSocketFactory(ctx.getSocketFactory());
+                ((HttpsURLConnection) conn).setHostnameVerifier((s, sslSession) -> true);
             }
 
             LOG.info("请求接口地址: {}, 请求数据: {}", url, reqStr);
 
-            OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream(), CHARSET);
+            OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream(), CHARSET);
             osw.write(reqStr);
             osw.flush();
             osw.close();
-            is = urlConnection.getInputStream();
+
+            // Http OK
+            if (conn.getResponseCode() / 100 == 2) {
+                is = conn.getInputStream();
+            } else {
+                is = conn.getErrorStream();
+            }
+
             byte[] bis = toByteArray(is);
-            String respStr = new String(bis, "UTF-8");
+            String respStr = new String(bis, CHARSET);
             LOG.info("请求接口地址: {}, 返回数据: {}", url, respStr);
             return respStr;
         } catch (Exception e) {
