@@ -1,8 +1,6 @@
 package org.algorithm.linked;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author <a href="mailto:yejh.1248@qq.com">Ye Jiahao</a>
@@ -119,6 +117,69 @@ public class SinglyLinkedListCase {
             prev = prev.next;
         }
         return true;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/linked-list-cycle/
+     * <p>
+     * 给定一个链表，判断链表中是否有环。
+     * 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+     * 输入: head = [3,2,0,-4], pos = 1
+     * 输出: true
+     * 解释: 链表中有一个环，其尾部连接到第二个节点。
+     */
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        while (Objects.nonNull(head)) {
+            if (!set.add(head)) {
+                return true;
+            }
+            head = head.next;
+        }
+        return false;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/delete-node-in-a-linked-list/
+     * <p>
+     * 请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
+     * 链表中所有节点的值都是唯一的。
+     * 输入: head = [4,5,1,9], node = 5
+     * 输出: [4,1,9]
+     * 解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+     */
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+     * <p>
+     * 编写一个程序，找到两个单链表相交的起始节点。
+     * 在返回结果后，两个链表仍须保持原有的结构。
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (Objects.isNull(headA) || Objects.isNull(headB)) {
+            return null;
+        }
+        Stack<ListNode> stackA = new Stack<>();
+        do {
+            stackA.push(headA);
+        } while (Objects.nonNull(headA = headA.next));
+        Stack<ListNode> stackB = new Stack<>();
+        do {
+            stackB.push(headB);
+        } while (Objects.nonNull(headB = headB.next));
+        ListNode result = null;
+        ListNode temp;
+        while (!stackA.isEmpty() && !stackB.isEmpty()) {
+            if ((temp = stackA.pop()) != stackB.pop()) {
+                break;
+            }
+            result = temp;
+        }
+        return result;
     }
 }
 
