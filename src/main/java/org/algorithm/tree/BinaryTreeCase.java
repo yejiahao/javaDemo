@@ -1,8 +1,6 @@
 package org.algorithm.tree;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -137,6 +135,58 @@ public class BinaryTreeCase {
         int rVal = Objects.isNull(root.right) ? 0 : root.right.val + findTilt(root.right, list);
         list.add(Math.abs(lVal - rVal));
         return lVal + rVal;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/diameter-of-binary-tree/
+     * <p>
+     * 给定一棵二叉树，你需要计算它的直径长度。
+     * 一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过根结点。
+     * 注意：两结点之间的路径长度是以它们之间边的数目表示。
+     */
+    private int diameterOfBinaryTreeMax;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        calDiameterOfBinaryTree(root);
+        return diameterOfBinaryTreeMax;
+    }
+
+    private int calDiameterOfBinaryTree(TreeNode root) {
+        if (Objects.isNull(root)) {
+            return -1;
+        }
+        int leftLen = calDiameterOfBinaryTree(root.left);
+        int rightLen = calDiameterOfBinaryTree(root.right);
+        // 直径 = 左层数 + 右层数 + 2
+        diameterOfBinaryTreeMax = Math.max(diameterOfBinaryTreeMax, Math.addExact(leftLen, rightLen) + 2);
+        return Math.max(leftLen, rightLen) + 1; // 层数
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/balanced-binary-tree/
+     * <p>
+     * 给定一个二叉树，判断它是否是高度平衡的二叉树。
+     * 一棵高度平衡二叉树定义为：一个二叉树每个节点的左右两个子树的高度差的绝对值不超过1。
+     */
+    public boolean isBalanced(TreeNode root) {
+        Map<String, Integer> result = calBalance(root);
+        return result.get("b") == 1;
+    }
+
+    private Map<String, Integer> calBalance(TreeNode node) {
+        Map<String, Integer> result = new HashMap<>(); // b -> 节点是否平衡, d -> 节点深度
+        if (Objects.isNull(node)) {
+            result.put("b", 1);
+            result.put("d", 0);
+        } else {
+            Map<String, Integer> leftResult = calBalance(node.left);
+            Map<String, Integer> rightResult = calBalance(node.right);
+            int leftDepth = leftResult.get("d");
+            int rightDepth = rightResult.get("d");
+            result.put("b", leftResult.get("b") & rightResult.get("b") & (Math.abs(leftDepth - rightDepth) >> 1 ^ 1));
+            result.put("d", Math.max(leftDepth, rightDepth) + 1);
+        }
+        return result;
     }
 }
 
