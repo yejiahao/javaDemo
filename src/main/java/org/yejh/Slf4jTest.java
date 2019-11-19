@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Slf4jTest {
-    // private static final Logger LOG = Logger.getLogger(Log4jTest.class);// Log4J
+    // private static final Logger LOG = Logger.getLogger(Log4jTest.class); // Log4J
     private static final Logger LOG = LoggerFactory.getLogger(Slf4jTest.class);
 
-    public static void method1() {
+    private static void method1() {
         LOG.info("--- {} method1 ---", "info");
         LOG.debug("--- debug method1 ---");
     }

@@ -15,13 +15,13 @@ public class Dom4JTest {
         SAXReader reader = new SAXReader();
         Document document = reader.read(xmlFile);
         Element root = document.getRootElement();
-        Iterator<Element> iterator = root.elementIterator("Province");
+        Iterator iterator = root.elementIterator("Province");
         while (iterator.hasNext()) {
-            Element provinceEle = iterator.next();
+            Element provinceEle = (Element) iterator.next();
             System.out.println(provinceEle.attribute(0).getValue());
-            Iterator<Element> cityIterator = provinceEle.elementIterator("City");
+            Iterator cityIterator = provinceEle.elementIterator("City");
             while (cityIterator.hasNext()) {
-                Element cityEle = cityIterator.next();
+                Element cityEle = (Element) cityIterator.next();
 //                String city = cityEle.elementText("City");
                 System.out.println("city: " + cityEle.getStringValue());
             }

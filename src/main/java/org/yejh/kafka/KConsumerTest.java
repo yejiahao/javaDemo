@@ -4,15 +4,23 @@ import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 
 import java.time.Duration;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
+/**
+ * kafka 消费者
+ *
+ * @author <a href="mailto:yejh.1248@qq.com">Ye Jiahao</a>
+ * @create 2019-09-21
+ * @since 2.3.1
+ */
 public class KConsumerTest {
+
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaProperties.KAFKA_CONNECT);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "test");
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");// false -> consumer.commitAsync(); 手动提交偏移量
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true"); // false -> consumer.commitAsync(); 手动提交偏移量
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
@@ -23,7 +31,7 @@ public class KConsumerTest {
 
         // 订阅指定的分区
         TopicPartition partition0 = new TopicPartition(KafkaProperties.TOPIC, 0);
-        consumer.assign(Arrays.asList(partition0));
+        consumer.assign(Collections.singletonList(partition0));
 
         // 控制消费的位置
         consumer.seek(partition0, 80);

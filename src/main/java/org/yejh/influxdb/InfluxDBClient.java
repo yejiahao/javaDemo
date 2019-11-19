@@ -11,10 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class InfluxDBClient {
+
     private static final Logger LOG = LoggerFactory.getLogger(InfluxDBClient.class);
 
     public static void main(String[] args) {
-        InfluxDB influxDB = InfluxDBFactory.connect("http://192.168.2.196:8086", "admin", "admin");
+        InfluxDB influxDB = InfluxDBFactory.connect("http://vmx.yejh.cn:8086", "admin", "admin");
         Pong pong = influxDB.ping();
         if (pong != null) {
             LOG.info(pong.toString());
@@ -34,7 +35,6 @@ public class InfluxDBClient {
                 LOG.info(obj.getClass() + "\t" + obj);
             }
             LOG.info(value + "\n-------------------------------------------------------------------");
-
         }
     }
 }

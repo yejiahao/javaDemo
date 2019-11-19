@@ -100,7 +100,7 @@ public class ConsistencyHash<K, V> {
     public String toString() {
         StringJoiner joiner = new StringJoiner(",", "ConsistencyHash[", "]");
         Arrays.stream(entry)
-                .filter(node -> Objects.nonNull(node))
+                .filter(Objects::nonNull)
                 .forEach(node -> joiner.add(String.format("%n{%s, %s}", node.key, node.value)));
         return joiner.toString();
     }

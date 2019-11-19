@@ -1,9 +1,9 @@
 package org.yejh;
 
 public class FinalizeEscapeGC {
-    public static FinalizeEscapeGC SAVE_HOOK = null;
+    private static FinalizeEscapeGC SAVE_HOOK = null;
 
-    public static void isAlive() {
+    private static void isAlive() {
         String result = SAVE_HOOK == null ? "no,i am dead:(" : "yes,i am still alive:)";
         System.out.println(result);
     }

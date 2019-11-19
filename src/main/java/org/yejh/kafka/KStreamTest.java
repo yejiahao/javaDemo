@@ -12,7 +12,13 @@ import org.apache.kafka.streams.kstream.Produced;
 import java.util.Arrays;
 import java.util.Properties;
 
+/**
+ * @author <a href="mailto:yejh.1248@qq.com">Ye Jiahao</a>
+ * @create 2019-09-21
+ * @since 2.3.1
+ */
 public class KStreamTest {
+
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "my-stream-processing-application");

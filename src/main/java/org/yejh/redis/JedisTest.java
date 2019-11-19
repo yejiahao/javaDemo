@@ -3,18 +3,22 @@ package org.yejh.redis;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
 import redis.clients.jedis.params.SetParams;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
 
 public class JedisTest {
+
     private static final String LOCK_SUCCESS = "OK";
     private static final Long RELEASE_SUCCESS = 1L;
 
     public static void main(String[] args) {
         JedisPoolConfig jpc = new JedisPoolConfig();
-        try (JedisPool jp = new JedisPool(jpc, "192.168.201.138", 6379); Jedis jedis = jp.getResource()) {
-//            Jedis jedis = new Jedis("192.168.201.138");
+        try (JedisPool jp = new JedisPool(jpc, "vmx.yejh.cn", 6379, Protocol.DEFAULT_TIMEOUT, "20170419");
+             Jedis jedis = jp.getResource()) {
+//            Jedis jedis = new Jedis("vmx.yejh.cn");
             jedis.set("name", "yejiahao");
             System.out.println("name: " + jedis.get("name"));
             jedis.append("name", " is a student.");
