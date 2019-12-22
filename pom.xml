@@ -21,7 +21,7 @@
         <mysql.version>8.0.18</mysql.version>
         <jedis.version>3.1.0</jedis.version>
         <shiro.version>1.4.2</shiro.version>
-        <netty.version>4.1.43.Final</netty.version>
+        <netty.version>4.1.44.Final</netty.version>
         <guava.version>28.1-jre</guava.version>
         <rocketmq.version>4.6.0</rocketmq.version>
     </properties>
