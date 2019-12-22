@@ -23,14 +23,12 @@ public class ProducerConsumer {
             while (true) {
                 buffer.addElement(++i);
                 try {
-                    Thread.sleep((int) Math.random() * 10000);
+                    Thread.sleep((int) (Math.random() * 10000));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
         }
-
     }
 
     static class ConsumerRunnable implements Runnable {
@@ -39,14 +37,12 @@ public class ProducerConsumer {
             while (true) {
                 buffer.removeElement();
                 try {
-                    Thread.sleep((int) Math.random() * 10000);
+                    Thread.sleep((int) (Math.random() * 10000));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
         }
-
     }
 
     static class Buffer {
