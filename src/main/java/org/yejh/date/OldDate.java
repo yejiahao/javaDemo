@@ -30,7 +30,7 @@ public class OldDate {
         System.out.println(d1);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(d1);
-        calendar.add(Calendar.MONDAY, 7);
+        calendar.add(Calendar.MONTH, 7);
         System.out.println(calendar.getTime());
     }
 }
