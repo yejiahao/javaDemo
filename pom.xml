@@ -14,7 +14,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <kafka.version>2.3.1</kafka.version>
-        <slf4j.version>1.7.29</slf4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
         <influxdb.version>2.16</influxdb.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <zxing.version>3.4.0</zxing.version>
