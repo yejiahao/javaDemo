@@ -1,6 +1,7 @@
 package org.algorithm.string;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:yejh.1248@qq.com">Ye Jiahao</a>
@@ -150,5 +151,66 @@ public class StringCase {
         }
         return -1;
          */
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/find-common-characters/
+     * <p>
+     * 给定仅有小写字母组成的字符串数组 A，返回列表中的每个字符串中都显示的全部字符（包括重复字符）组成的列表。
+     * 例如，如果一个字符在每个字符串中出现 3 次，但不是 4 次，则需要在最终答案中包含该字符 3 次。
+     * <p>
+     * 输入：["bella","label","roller"]
+     * 输出：["e","l","l"]
+     */
+    public List<String> commonChars(String[] A) {
+        // 字符串中字符数组升序排列
+        String[] A1 = new String[A.length];
+        for (int i = 0, length = A.length; i < length; i++) {
+            char[] chars = A[i].toCharArray();
+            Arrays.sort(chars);
+            A1[i] = new String(chars);
+        }
+
+        String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+
+        List<String> result = new ArrayList<>();
+        flag:
+        for (String letter : letters) {
+            String temp = letter;
+            while (true) {
+                for (String str : A1) {
+                    if (!str.contains(temp)) {
+                        continue flag;
+                    }
+                }
+                result.add(letter);
+                temp += letter;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/
+     * <p>
+     * 给定一个字符串，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。
+     * <p>
+     * 输入："Let's take LeetCode contest"
+     * 输出："s'teL ekat edoCteeL tsetnoc"
+     * 注意：在字符串中，每个单词由单个空格分隔，并且字符串中不会有任何额外的空格。
+     */
+    public String reverseWords(String s) {
+        List<Character> list = new LinkedList<>();
+        int index = 0; // 插入位置
+        for (char c : s.toCharArray()) {
+            if (c == ' ') {
+                list.add(c);
+                index = list.size();
+            } else {
+                list.add(index, c);
+            }
+        }
+        return list.stream().map(Objects::toString).collect(Collectors.joining());
     }
 }
