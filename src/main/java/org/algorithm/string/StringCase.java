@@ -192,6 +192,52 @@ public class StringCase {
     }
 
     /**
+     * https://leetcode-cn.com/problems/reverse-string/
+     * <p>
+     * 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
+     * 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+     * 你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
+     * <p>
+     * 输入：["h","e","l","l","o"]
+     * 输出：["o","l","l","e","h"]
+     */
+    public void reverseString(char[] s) {
+        LinkedList<Character> list = new LinkedList<>();
+        for (char c : s) {
+            list.add(c);
+        }
+        for (int i = 0, len = s.length; i < len; i++) {
+            s[i] = list.removeLast();
+        }
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/reverse-string-ii/
+     * <p>
+     * 给定一个字符串和一个整数 k，你需要对从字符串开头算起的每个 2k 个字符的前k个字符进行反转。
+     * 如果剩余少于 k 个字符，则将剩余的所有全部反转。
+     * 如果有小于 2k 但大于或等于 k 个字符，则反转前 k 个字符，并将剩余的字符保持原样。
+     * <p>
+     * 输入：s = "abcdefg", k = 2
+     * 输出："bacdfeg"
+     * 要求：1. 该字符串只包含小写的英文字母。2. 给定字符串的长度和 k 在[1, 10000]范围内。
+     */
+    public String reverseStr(String s, int k) {
+        List<Character> list = new LinkedList<>();
+        int index = 0; // 插入位置
+        char[] chars = s.toCharArray();
+        for (int i = 0, len = chars.length; i < len; i++) {
+            if (i % (k << 1) < k) {
+                list.add(index, chars[i]);
+            } else {
+                list.add(chars[i]);
+                index = list.size();
+            }
+        }
+        return list.stream().map(Objects::toString).collect(Collectors.joining());
+    }
+
+    /**
      * https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/
      * <p>
      * 给定一个字符串，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。
