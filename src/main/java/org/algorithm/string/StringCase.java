@@ -259,4 +259,62 @@ public class StringCase {
         }
         return list.stream().map(Objects::toString).collect(Collectors.joining());
     }
+
+    /**
+     * https://leetcode-cn.com/problems/last-stone-weight/
+     * <p>
+     * 有一堆石头，每块石头的重量都是正整数。
+     * <p>
+     * 每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x <= y。那么粉碎的可能结果如下：
+     * <p>
+     * 如果 x == y，那么两块石头都会被完全粉碎；
+     * 如果 x != y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。
+     * 最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。
+     * <p>
+     * 输入：[2,7,4,1,8,1]
+     * 输出：1
+     */
+    public int lastStoneWeight(int[] stones) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int i : stones) {
+            pq.offer(i);
+        }
+        while (pq.size() >= 2) {
+            int first = pq.poll();
+            @SuppressWarnings("ConstantConditions")
+            int second = pq.poll();
+            if (first > second) {
+                pq.offer(first - second);
+            }
+        }
+        return pq.size() == 1 ? pq.peek() : 0;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/split-a-string-in-balanced-strings/
+     * <p>
+     * 在一个「平衡字符串」中，'L' 和 'R' 字符的数量是相同的。
+     * <p>
+     * 给出一个平衡字符串 s，请你将它分割成尽可能多的平衡字符串。
+     * <p>
+     * 返回可以通过分割得到的平衡字符串的最大数量。
+     * <p>
+     * 输入：s = "RLRRLLRLRL" | "RLLLLRRRLR" | "LLLLRRRR"
+     * 输出：4 | 3 | 1
+     * 解释：["RL", "RRLL", "RL", "RL"] | ["RL", "LLLRRR", "LR"] | ["LLLLRRRR"]
+     */
+    public int balancedStringSplit(String s) {
+        int ret = 0, tmp = 0;
+        for (char c : s.toCharArray()) {
+            if (c == 'L') {
+                tmp++;
+            } else {
+                tmp--;
+            }
+            if (tmp == 0) {
+                ret++;
+            }
+        }
+        return ret;
+    }
 }
