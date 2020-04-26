@@ -40,7 +40,7 @@ public class StringCase {
      * https://leetcode-cn.com/problems/length-of-last-word/
      * <p>
      * 给定一个仅包含大小写字母和空格 ' ' 的字符串，返回其最后一个单词的长度。
-     * 如果不存在最后一个单词，请返回 0 。
+     * 如果不存在最后一个单词，请返回 0。
      */
     public int lengthOfLastWord(String s) {
         int cnt = 0;
@@ -316,5 +316,157 @@ public class StringCase {
             }
         }
         return ret;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/shortest-distance-to-a-character/
+     * <p>
+     * 给定一个字符串 S 和一个字符 C。返回一个代表字符串 S 中每个字符到字符串 S 中的字符 C 的最短距离的数组。
+     * <p>
+     * 输入：S = "loveleetcode", C = 'e'
+     * 输出：[3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0]
+     */
+    public int[] shortestToChar(String S, char C) {
+        char[] chars = S.toCharArray();
+        int charsLen;
+        int[] ret = new int[charsLen = chars.length];
+        // 构造出指定升序下标数组 [3, 5, 6, 11]
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < charsLen; i++) {
+            if (chars[i] == C) {
+                list.add(i);
+            }
+        }
+
+        for (int i = 0; i < charsLen; i++) {
+            for (int j = 0, size = list.size(); j < size; j++) {
+                int low = list.get(j);
+                if (j == 0 && i <= low) {
+                    ret[i] = low - i;
+                    break;
+                }
+                if (j == size - 1 && i >= low) {
+                    ret[i] = i - low;
+                    break;
+                }
+                int high = list.get(j + 1);
+                if (i >= low && i < high) {
+                    ret[i] = Math.min(i - low, high - i);
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/count-number-of-nice-subarrays/
+     * <p>
+     * 给你一个整数数组 nums 和一个整数 k。
+     * <p>
+     * 如果某个 连续 子数组中恰好有 k 个奇数数字，我们就认为这个子数组是「优美子数组」。
+     * <p>
+     * 请返回这个数组中「优美子数组」的数目。
+     * <p>
+     * 输入：nums = [1,1,2,1,1], k = 3 | nums = [2,4,6], k = 1 | nums = [2,2,2,1,2,2,1,2,2,2], k = 2
+     * 输出：2 | 0 | 16
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    public int numberOfSubarrays(int[] nums, int k) {
+        List<Integer> list = new ArrayList<>();
+        list.add(-1); // 构造左读取下标
+        int len;
+        for (int i = 0; i < (len = nums.length); i++) {
+            if (nums[i] % 2 == 1) list.add(i); // 添加奇数元素下标
+        }
+        list.add(len); // 构造右读取下标
+
+        int result = 0;
+        int a = 0;
+        while (a + k + 1 < list.size()) {
+            int lChoice = list.get(a + 1) - list.get(a);
+            int rChoice = list.get(a + k + 1) - list.get(a + k);
+            result += lChoice * rChoice;
+            a++;
+        }
+        return result;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/generate-a-string-with-characters-that-have-odd-counts/
+     * <p>
+     * 给你一个整数 n，请你返回一个含 n 个字符的字符串，其中每种字符在该字符串中都恰好出现 奇数次。
+     * <p>
+     * 返回的字符串必须只含小写英文字母。如果存在多个满足题目要求的字符串，则返回其中任意一个即可。
+     * <p>
+     * 输入：n = 4 | n = 2 | n = 7
+     * 输出："pppz" | "xy" | "holasss"
+     */
+    public String generateTheString(int n) {
+        if (n <= 0) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0, size = n - 1; i < size; i++) {
+            sb.append('a');
+        }
+        if (n % 2 == 1) {
+            sb.append('a');
+        } else {
+            sb.append('b');
+        }
+        return sb.toString();
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/increasing-decreasing-string/
+     * <p>
+     * 给你一个字符串 s ，请你根据下面的算法重新构造字符串：
+     * <p>
+     * 1. 从 s 中选出 最小 的字符，将它 接在 结果字符串的后面。
+     * 2. 从 s 剩余字符中选出 最小 的字符，且该字符比上一个添加的字符大，将它 接在 结果字符串后面。
+     * 3. 重复步骤 2，直到你没法从 s 中选择字符。
+     * 4. 从 s 中选出 最大 的字符，将它 接在 结果字符串的后面。
+     * 5. 从 s 剩余字符中选出 最大 的字符，且该字符比上一个添加的字符小，将它 接在 结果字符串后面。
+     * 6. 重复步骤 5，直到你没法从 s 中选择字符。
+     * 7. 重复步骤 1 到 6 ，直到 s 中所有字符都已经被选过。
+     * 在任何一步中，如果最小或者最大字符不止一个，你可以选择其中任意一个，并将其添加到结果字符串。
+     * <p>
+     * 请你返回将 s 中字符重新排序后的 结果字符串。
+     * <p>
+     * 输入：s = "aaaabbbbcccc" | "rat" | "leetcode" | "ggggggg" | "spo"
+     * 输出："abccbaabccba" | "art" | "cdelotee" | "ggggggg" | "ops"
+     * 解释：第一轮的步骤 1，2，3 后，结果字符串为 result = "abc"
+     * 第一轮的步骤 4，5，6 后，结果字符串为 result = "abccba"
+     * 第一轮结束，现在 s = "aabbcc" ，我们再次回到步骤 1
+     * 第二轮的步骤 1，2，3 后，结果字符串为 result = "abccbaabc"
+     * 第二轮的步骤 4，5，6 后，结果字符串为 result = "abccbaabccba"
+     */
+    public String sortString(String s) {
+        StringBuilder sb = new StringBuilder();
+        int[] arr = new int[26];
+        for (char c : s.toCharArray()) {
+            arr[c - 97]++;
+        }
+        boolean naturalOrder = true; // 正序遍历
+        while (sb.length() != s.length()) {
+            if (naturalOrder) {
+                for (int i = 0; i < 26; i++) {
+                    if (arr[i] > 0) {
+                        sb.append((char) (i + 97));
+                        arr[i]--;
+                    }
+                }
+            } else {
+                for (int i = 25; i > -1; i--) {
+                    if (arr[i] > 0) {
+                        sb.append((char) (i + 97));
+                        arr[i]--;
+                    }
+                }
+            }
+            naturalOrder = !naturalOrder; // 改变遍历顺序
+        }
+        return sb.toString();
     }
 }
