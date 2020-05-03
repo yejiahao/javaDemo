@@ -219,6 +219,104 @@ public class BinaryTreeCase {
             list.add(root.val);
         }
     }
+
+    /**
+     * https://leetcode-cn.com/problems/convert-bst-to-greater-tree/
+     * <p>
+     * 538. 把二叉搜索树转换为累加树
+     * <p>
+     * 给定一个二叉搜索树（Binary Search Tree），把它转换成为累加树（Greater Tree)，使得每个节点的值是原来的节点值加上所有大于它的节点值之和。
+     */
+    int num = 0;
+
+    @SuppressWarnings("UnusedReturnValue")
+    public TreeNode convertBST(TreeNode root) {
+        if (Objects.nonNull(root)) {
+            // 遍历右子树
+            convertBST(root.right);
+            // 遍历顶点
+            root.val += num;
+            num = root.val;
+            // 遍历左子树
+            convertBST(root.left);
+            return root;
+        }
+        return null;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/subtree-of-another-tree/
+     * <p>
+     * 572. 另一个树的子树
+     * <p>
+     * 给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t 具有相同结构和节点值的子树。s 的一个子树包括 s 的一个节点和这个节点的所有子孙。
+     * s 也可以看做它自身的一棵子树。
+     */
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        if (Objects.isNull(s)) {
+            return false;
+        }
+        if (s.val == t.val && calIsSubTree(s, t)) return true;
+        return isSubtree(s.left, t) || isSubtree(s.right, t);
+    }
+
+    private boolean calIsSubTree(TreeNode s, TreeNode t) {
+        boolean sNull = Objects.isNull(s);
+        boolean tNull = Objects.isNull(t);
+        if (sNull && tNull) return true;
+        if (sNull || tNull) return false;
+        if (s.val != t.val) return false;
+
+        return calIsSubTree(s.left, t.left) && calIsSubTree(s.right, t.right);
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/merge-two-binary-trees/
+     * <p>
+     * 617. 合并二叉树
+     * <p>
+     * 给定两个二叉树，想象当你将它们中的一个覆盖到另一个上时，两个二叉树的一些节点便会重叠。
+     * <p>
+     * 你需要将他们合并为一个新的二叉树。合并的规则是如果两个节点重叠，那么将他们的值相加作为节点合并后的新值，否则不为 NULL 的节点将直接作为新二叉树的节点。
+     */
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        boolean t1Null = Objects.isNull(t1);
+        boolean t2Null = Objects.isNull(t2);
+        if (t1Null && t2Null) return null;
+        if (t1Null) return t2;
+        if (t2Null) return t1;
+        TreeNode ret = new TreeNode(t1.val + t2.val);
+        ret.left = mergeTrees(t1.left, t2.left);
+        ret.right = mergeTrees(t1.right, t2.right);
+        return ret;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/increasing-order-search-tree/
+     * <p>
+     * 897. 递增顺序查找树
+     * <p>
+     * 给你一个树，请你 <em>按中序遍历</em> 重新排列树，使树中最左边的结点现在是树的根，并且每个结点没有左子结点，只有一个右子结点。
+     */
+    public TreeNode increasingBST(TreeNode root) {
+        List<Integer> list = new ArrayList<>(); // 从小到大
+        calIncreasingBST(root, list);
+        TreeNode head = new TreeNode(-1); // 构造虚拟节点
+        TreeNode tmp = head;
+        for (Integer integer : list) {
+            tmp.right = new TreeNode(integer);
+            tmp = tmp.right;
+        }
+        return head.right;
+    }
+
+    private void calIncreasingBST(TreeNode node, List<Integer> list) {
+        if (Objects.nonNull(node)) {
+            calIncreasingBST(node.left, list);
+            list.add(node.val);
+            calIncreasingBST(node.right, list);
+        }
+    }
 }
 
 /**
