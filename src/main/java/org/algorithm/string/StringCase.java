@@ -469,4 +469,34 @@ public class StringCase {
         }
         return sb.toString();
     }
+
+    /**
+     * https://leetcode-cn.com/problems/reverse-vowels-of-a-string/
+     * <p>
+     * 345. 反转字符串中的元音字母
+     * <p>
+     * 编写一个函数，以字符串作为输入，反转该字符串中的元音字母。
+     * <p>
+     * 输入: "leetcode"
+     * 输出: "leotcede"
+     */
+    public String reverseVowels(String s) {
+        List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+        List<Object[]> list = new ArrayList<>();
+        char[] chars = s.toCharArray();
+        for (int i = 0, len = chars.length; i < len; i++) {
+            if (vowels.contains(chars[i])) {
+                Object[] objs = new Object[2];
+                objs[0] = i;
+                objs[1] = chars[i];
+                list.add(objs);
+            }
+        }
+        for (int i = 0, size = list.size(); i < size; i++) {
+            Object[] objs = list.get(i);
+            Object[] newObjs = list.get(size - 1 - i);
+            chars[(int) objs[0]] = (char) newObjs[1];
+        }
+        return new String(chars);
+    }
 }

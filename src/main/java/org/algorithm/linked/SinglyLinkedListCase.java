@@ -96,11 +96,14 @@ public class SinglyLinkedListCase {
     /**
      * https://leetcode-cn.com/problems/palindrome-linked-list/
      * <p>
+     * 234. 回文链表
+     * <p>
      * 请判断一个链表是否为回文链表。
      * 输入: 1->2->2->1
      * 输出: true
      */
     public boolean isPalindrome(ListNode head) {
+        /*
         List<Integer> list = new ArrayList<>();
         ListNode prev = null;
         while (Objects.nonNull(head)) {
@@ -114,6 +117,32 @@ public class SinglyLinkedListCase {
             if (list.remove(0) != prev.val) {
                 return false;
             }
+            prev = prev.next;
+        }
+        return true;
+        */
+        // 要实现 O(n) 的时间复杂度和 O(1) 的空间复杂度，需要翻转后半部分
+        if (Objects.isNull(head) || Objects.isNull(head.next)) {
+            return true;
+        }
+        ListNode fast = head;
+        ListNode slow = head;
+        while (Objects.nonNull(fast) && Objects.nonNull(fast.next)) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        // head -> slow -> fast
+        ListNode prev = null;
+        while (Objects.nonNull(slow)) {
+            ListNode nextVal = slow.next;
+            slow.next = prev;
+            prev = slow;
+            slow = nextVal;
+        }
+        // head -> slow, prev -> slow
+        while (Objects.nonNull(head) && Objects.nonNull(prev)) {
+            if (head.val != prev.val) return false;
+            head = head.next;
             prev = prev.next;
         }
         return true;
