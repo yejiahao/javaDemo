@@ -317,6 +317,43 @@ public class BinaryTreeCase {
             calIncreasingBST(node.right, list);
         }
     }
+
+    /**
+     * https://leetcode-cn.com/problems/binary-tree-paths/
+     * <p>
+     * 257. 二叉树的所有路径
+     * <p>
+     * 给定一个二叉树，返回所有从根节点到叶子节点的路径。
+     * <p>
+     * 输入:
+     * 1
+     * /   \
+     * 2     3
+     * \
+     * 5
+     * 输出: ["1->2->5", "1->3"]
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> binaryTreePaths(TreeNode root) {
+        if (Objects.isNull(root)) return Collections.EMPTY_LIST;
+        calBinaryTreePaths(root, "");
+        return binaryTreePathsList;
+    }
+
+    private final List<String> binaryTreePathsList = new ArrayList<>();
+
+    private void calBinaryTreePaths(TreeNode node, String val) {
+        String newVal = val + (Objects.equals(val, "") ? "" : "->") + node.val;
+        if (Objects.nonNull(node.left)) {
+            calBinaryTreePaths(node.left, newVal);
+        }
+        if (Objects.nonNull(node.right)) {
+            calBinaryTreePaths(node.right, newVal);
+        }
+        if (Objects.isNull(node.left) && Objects.isNull(node.right)) {
+            binaryTreePathsList.add(newVal);
+        }
+    }
 }
 
 /**
