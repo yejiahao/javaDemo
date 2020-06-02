@@ -354,6 +354,118 @@ public class BinaryTreeCase {
             binaryTreePathsList.add(newVal);
         }
     }
+
+    /**
+     * https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/
+     * <p>
+     * 107. 二叉树的层次遍历 II
+     * <p>
+     * 给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+     * <p>
+     * 输入: [3,9,20,null,null,15,7]
+     * 输出: [[15,7], [9,20], [3]]
+     */
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        LinkedList<List<Integer>> ret = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>(); // 队列存放层次遍历元素
+
+        if (Objects.nonNull(root)) queue.offer(root);
+
+        while (true) {
+            int size = queue.size();
+            if (size == 0) return ret;
+
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                TreeNode left, right;
+                if (Objects.nonNull(left = node.left)) {
+                    queue.offer(left);
+                }
+                if (Objects.nonNull(right = node.right)) {
+                    queue.offer(right);
+                }
+            }
+            ret.addFirst(list);
+        }
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
+     * <p>
+     * 108. 将有序数组转换为二叉搜索树
+     * <p>
+     * 将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+     * <p>
+     * 本题中，一个高度平衡二叉树是指一个二叉树每个节点的左右两个子树的高度差的绝对值不超过 1。
+     * <p>
+     * 输入: [-10,-3,0,5,9]
+     * 输出: [0,-3,9,-10,null,5]
+     */
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return calSortedArrayToBST(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode calSortedArrayToBST(int[] nums, int low, int high) {
+        if (low > high) return null;
+        int mid = low + high >>> 1;
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = calSortedArrayToBST(nums, low, mid - 1);
+        root.right = calSortedArrayToBST(nums, mid + 1, high);
+        return root;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/sum-of-left-leaves/
+     * <p>
+     * 404. 左叶子之和
+     * <p>
+     * 计算给定二叉树的所有左叶子之和。
+     * <p>
+     * 示例：
+     * 3
+     * / \
+     * 9  20
+     * /  \
+     * 15   7
+     * <p>
+     * 在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24
+     */
+    public int sumOfLeftLeaves(TreeNode root) {
+        if (Objects.isNull(root)) return 0;
+        calSumOfLeftLeaves(root, "r"); // 父节点不算左叶子，👍
+        return sumOfLeftLeavesVal;
+    }
+
+    private int sumOfLeftLeavesVal = 0;
+
+    public void calSumOfLeftLeaves(TreeNode root, String lr) {
+        boolean lNull = Objects.isNull(root.left);
+        boolean rNull = Objects.isNull(root.right);
+        if (!lNull) calSumOfLeftLeaves(root.left, "l");
+        if (!rNull) calSumOfLeftLeaves(root.right, "r");
+        if (lNull && rNull && Objects.equals(lr, "l")) sumOfLeftLeavesVal += root.val;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+     * <p>
+     * 235. 二叉搜索树的最近公共祖先
+     * <p>
+     * 最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+     * <p>
+     * 输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+     * 输出: 6
+     * 解释: 节点 2 和节点 8 的最近公共祖先是 6。
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        int pDiff = root.val - p.val;
+        int qDiff = root.val - q.val;
+        if (pDiff * qDiff <= 0) return root;
+        if (pDiff < 0 && qDiff < 0) return lowestCommonAncestor(root.right, p, q);
+        else return lowestCommonAncestor(root.left, p, q);
+    }
 }
 
 /**
