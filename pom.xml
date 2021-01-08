@@ -23,7 +23,7 @@
         <shiro.version>1.5.3</shiro.version>
         <netty.version>4.1.50.Final</netty.version>
         <guava.version>29.0-jre</guava.version>
-        <rocketmq.version>4.7.0</rocketmq.version>
+        <rocketmq.version>4.8.0</rocketmq.version>
     </properties>
 
     <dependencies>
