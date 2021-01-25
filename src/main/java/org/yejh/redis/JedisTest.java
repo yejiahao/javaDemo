@@ -1,20 +1,21 @@
 package org.yejh.redis;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Protocol;
+import redis.clients.jedis.*;
 import redis.clients.jedis.params.SetParams;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class JedisTest {
 
     private static final String LOCK_SUCCESS = "OK";
     private static final Long RELEASE_SUCCESS = 1L;
 
-    public static void main(String[] args) {
+    @SuppressWarnings("InfiniteLoopStatement")
+    public static void main(String[] args) throws InterruptedException {
         JedisPoolConfig jpc = new JedisPoolConfig();
         try (JedisPool jp = new JedisPool(jpc, "vmx.yejh.cn", 6379, Protocol.DEFAULT_TIMEOUT, "20170419");
              Jedis jedis = jp.getResource()) {
@@ -32,6 +33,20 @@ public class JedisTest {
             String reqId = UUID.randomUUID().toString();
             System.out.println(tryDistributedLock(jedis, "key", reqId));
             System.out.println(releaseDistributedLock(jedis, "key", reqId));
+        }
+
+        // 哨兵模式
+        Set<String> sentinels = new HashSet<>();
+        sentinels.add("vm2.yejh.cn:26379");
+        sentinels.add("vm2.yejh.cn:26380");
+        sentinels.add("vm2.yejh.cn:26381");
+        try (JedisSentinelPool pool = new JedisSentinelPool("mymaster", sentinels, "20170419");
+             Jedis jedis = pool.getResource()) {
+            while (true) {
+                jedis.set("abcd", "1234");
+                System.out.println("result: " + jedis.get("abcd"));
+                TimeUnit.SECONDS.sleep(20L);
+            }
         }
     }
 
