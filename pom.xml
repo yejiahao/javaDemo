@@ -20,6 +20,7 @@
         <zxing.version>3.4.0</zxing.version>
         <mysql.version>8.0.20</mysql.version>
         <jedis.version>3.3.0</jedis.version>
+        <redisson.version>3.14.1</redisson.version>
         <shiro.version>1.5.3</shiro.version>
         <netty.version>4.1.50.Final</netty.version>
         <guava.version>29.0-jre</guava.version>
@@ -91,6 +92,11 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>${redisson.version}</version>
         </dependency>
 
         <!-- http -->
